@@ -63,12 +63,25 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text(
+            Text(
               'You have pushed the button this many times:',
             ),
-            new Text(
+            Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text("Text"),
+                  onPressed: () {},
+                ),
+                FlatButton(
+                  child: Text("Text2"),
+                  onPressed: () {},
+                ),
+              ],
             ),
           ],
         ),
