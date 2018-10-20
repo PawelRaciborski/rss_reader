@@ -40,8 +40,6 @@ class _HomePageState extends State<HomePage> {
     // than having to individually change instances of widgets.
     return new Scaffold(
       appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
       ),
       body: new Center(
@@ -63,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'You have pushed the button this many times:',
             ),
             Text(
@@ -73,13 +71,12 @@ class _HomePageState extends State<HomePage> {
             ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
-                RaisedButton(
-                  child: Text("Text"),
-                  onPressed: () {},
-                ),
-                FlatButton(
-                  child: Text("Text2"),
-                  onPressed: () {},
+                RaisedButton.icon(
+                  icon: const Icon(Icons.clear),
+                  label: const Text("Reset"),
+                  onPressed: () {
+                    _reset();
+                  },
                 ),
               ],
             ),
@@ -89,8 +86,14 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: new FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: new Icon(Icons.refresh),
+        child: const Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _reset() {
+    setState(() {
+      _counter = 0;
+    });
   }
 }
