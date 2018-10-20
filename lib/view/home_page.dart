@@ -1,19 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:rss_reader/viewmodel/home_page_view_model.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -21,13 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-  final random = Random();
+  final _viewModel = HomePageViewModel();
 
   void _incrementCounter() {
-    setState(() {
-      _counter = _counter + random.nextInt(100);
-    });
+    _viewModel.onAdd();
+  }
+
+  void _reset() {
+    _viewModel.onReset();
   }
 
   @override
@@ -36,30 +26,50 @@ class _HomePageState extends State<HomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton.icon(
-                  icon: const Icon(Icons.clear),
-                  label: const Text("Reset"),
-                  onPressed: () {
-                    _reset();
-                  },
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: new Center(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              StreamBuilder<int>(
+                stream: _viewModel.counterValue,
+                builder: (context, snapshot) {
+                  return Text(
+                    '${snapshot.data ?? 0}',
+                    style: Theme.of(context).textTheme.display1,
+                  );
+                },
+              ),
+              Padding(
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'What\'s up, mate?',
+                    labelText: 'Sum text',
+                  ),
+                  maxLines: 3,
                 ),
-              ],
-            ),
-          ],
+                padding: EdgeInsets.all(10.0),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton.icon(
+                    icon: const Icon(Icons.clear),
+                    label: const Text("Reset"),
+                    onPressed: () {
+                      _reset();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
@@ -68,11 +78,5 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.refresh),
       ),
     );
-  }
-
-  void _reset() {
-    setState(() {
-      _counter = 0;
-    });
   }
 }
