@@ -1,3 +1,5 @@
+import 'dart:async';
+
 class DatesRepository {
   final duration = Duration(milliseconds: 10);
   final dates = [
@@ -19,9 +21,12 @@ class DatesRepository {
   ];
 
   Future<int> get databaseSize {
-    return Future.delayed(duration, () => dates.length);
+    return Future.sync(() => dates.length);
   }
 
   Future<int> getDateAtIndex(int index) =>
-      Future.delayed(duration, () => dates[index]);
+      Future.sync(() => dates[index]);
+
+  Future<List<int>> get allDates =>
+      Future.sync(() => dates);
 }

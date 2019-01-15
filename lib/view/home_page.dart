@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rss_reader/view/posts_list.dart';
 import 'package:rss_reader/viewmodel/home_page_view_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,57 +27,34 @@ class _HomePageState extends State<HomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              StreamBuilder<int>(
-                stream: _viewModel.counterValue,
-                builder: (context, snapshot) {
-                  return Text(
-                    '${snapshot.data ?? 0}',
-                    style: Theme.of(context).textTheme.display1,
-                  );
-                },
-              ),
-              Padding(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'What\'s up, mate?',
-                    labelText: 'Sum text',
-                  ),
-                  maxLines: 3,
-                ),
-                padding: EdgeInsets.all(10.0),
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton.icon(
-                    icon: const Icon(Icons.clear),
-                    label: const Text("Reset"),
-                    onPressed: () {
-                      _reset();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: _getBody(),
       floatingActionButton: new FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.refresh),
       ),
+    );
+  }
+
+  Widget _getBody() {
+    return Column(
+      children: <Widget>[_getList(), _getTopButtons()],
+    );
+  }
+
+  Flexible _getList() => Flexible(
+        child: StreamBuilder<List<int>>(
+          stream: _viewModel.datesList,
+          builder: (context, snapshot) {
+            return PostsList(snapshot.data ?? []);
+          },
+        ),
+      );
+
+  Widget _getTopButtons() {
+    return RaisedButton(
+      onPressed: _reset,
+      child: Text("Reset"),
     );
   }
 }
