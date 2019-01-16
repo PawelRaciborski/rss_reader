@@ -1,4 +1,6 @@
 import 'package:rss_reader/model/dates_repository.dart';
+import 'package:rss_reader/model/rss_repository.dart';
+import 'package:webfeed/webfeed.dart';
 
 abstract class BaseUsecase<T> {
   Future<T> execute();
@@ -31,3 +33,12 @@ class GetSelectedDateUsecase extends BaseUsecase<int> {
   @override
   Future<int> execute() => repository.getDateAtIndex(_selectedIndex);
 }
+
+
+class GetAllFeedsUsecase extends BaseUsecase<AtomFeed> {
+  final rssRepository = RssRepository();
+
+  @override
+  Future<AtomFeed> execute() => rssRepository.loadFeeds();
+}
+

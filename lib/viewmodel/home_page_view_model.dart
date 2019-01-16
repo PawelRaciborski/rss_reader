@@ -19,6 +19,7 @@ class HomePageViewModel {
   final getDatesSizeUsecase = GetDatesSizeUsecase();
   final getSelectedDateUsecase = GetSelectedDateUsecase();
   final getDatesUsecase = GetDatesUsecase();
+  final getAllFeedsUsecase = GetAllFeedsUsecase();
 
   HomePageViewModel() {
     _counterStreamController.add(_counter);
