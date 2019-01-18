@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:rss_reader/model/usecases.dart';
+import 'package:webfeed/domain/atom_item.dart';
 
 class HomePageViewModel {
   int _counter = 0;
@@ -10,11 +11,11 @@ class HomePageViewModel {
 
   Stream<int> get counterValue => _counterStreamController.stream;
 
-  Stream<List<int>> get datesList => _datesListStreamController.stream;
+  Stream<List<AtomItem>> get itemsList => _itemsStreamController.stream;
 
   final _counterStreamController = StreamController<int>.broadcast();
 
-  final _datesListStreamController = StreamController<List<int>>.broadcast();
+  final _itemsStreamController = StreamController<List<AtomItem>>.broadcast();
 
   final getDatesSizeUsecase = GetDatesSizeUsecase();
   final getSelectedDateUsecase = GetSelectedDateUsecase();
@@ -27,15 +28,15 @@ class HomePageViewModel {
   }
 
   Future<void> _loadList() async {
-    var list = await getDatesUsecase.execute();
-    _datesListStreamController.add(list);
+    var feed = await getAllFeedsUsecase.execute();
+    _itemsStreamController.add(feed.items);
   }
 
   Future<void> onReset() async {
     // simulate processing time
 //    _counter = await Future.delayed(Duration(milliseconds: 10), () => 0);
 //    _counterStreamController.add(_counter);
-    _datesListStreamController.add([]);
+    _itemsStreamController.add([]);
   }
 
   Future<void> onAdd() async {
@@ -51,6 +52,6 @@ class HomePageViewModel {
 
   void dispose() {
     _counterStreamController.close();
-    _datesListStreamController.close();
+    _itemsStreamController.close();
   }
 }

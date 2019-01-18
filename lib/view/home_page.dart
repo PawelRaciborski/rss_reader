@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rss_reader/view/posts_list.dart';
 import 'package:rss_reader/viewmodel/home_page_view_model.dart';
+import 'package:webfeed/domain/atom_item.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -43,8 +44,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Flexible _getList() => Flexible(
-        child: StreamBuilder<List<int>>(
-          stream: _viewModel.datesList,
+        child: StreamBuilder<List<AtomItem>>(
+          stream: _viewModel.itemsList,
           builder: (context, snapshot) {
             return PostsList(snapshot.data ?? []);
           },
